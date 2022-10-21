@@ -17,6 +17,14 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/", router);
 
+io.on("connect", (socket) => {
+  console.log(`${socket.id} has been connected to Server`);
+
+  socket.on("disconnect", (reason) => {
+    console.log(`${socket.id} is disconnected`);
+  });
+});
+
 server.listen(port, () => {
   console.log(`Server listening on ${port}`);
 });
