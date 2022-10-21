@@ -1,4 +1,3 @@
-const { application } = require("express");
 const express = require("express");
 const app = express();
 const path = require("path");
@@ -20,7 +19,19 @@ app.use("/", router);
 io.on("connect", (socket) => {
   console.log(`${socket.id} has been connected to Server`);
 
-  socket.on("disconnect", (reason) => {
+  socket.on("mouseMove", ({ x, y }) => {
+    socket.broadcast.emit("onMouseMove", { x, y });
+  });
+
+  socket.on("mouseUp", ({ x, y }) => {
+    socket.broadcast.emit("onMouseUp", { x, y });
+  });
+
+  socket.on("mouseDown", ({ x, y }) => {
+    socket.broadcast.emit("onMouseDown", { x, y });
+  });
+
+  socket.on("disconnect", (_reason) => {
     console.log(`${socket.id} is disconnected`);
   });
 });
